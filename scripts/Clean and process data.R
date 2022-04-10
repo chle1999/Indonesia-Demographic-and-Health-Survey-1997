@@ -3,29 +3,31 @@ install.packages("pdftools")
 install.packages("purrr")
 install.packages("tidyverse")
 install.packages("stringi")
+install.packages("here")
 library(janitor)
 library(pdftools)
 library(purrr)
 library(tidyverse)
 library(stringi)
+library(here)
 
 # extract page 42 content of the report by OCR
-all_content <- pdf_text("./FR95.pdf")
+all_content <- pdf_text(paste(here(), "/inputs/FR95.pdf", sep = ""))
 page_71 <- stri_split_lines(all_content[[71]])[[1]] 
-
+page_71
 # Grab the name of the table
 table_name <- page_71[1] %>% str_squish() %>% str_to_title() %>% strsplit(" +")
 table_name <- paste(table_name[[1]][3], table_name[[1]][4], table_name[[1]][5], table_name[[1]][5], sep=" ")
 
 # Grab the description of the table
-table_description <- page_71[2] %>% str_squish()  %>% paste(str_squish(page_71[3]), sep=" ") %>% str_to_title()
+table_description <- page_71[2] %>% str_squish()  %>% paste(str_squish(page_71[3]), str_squish(page_71[4]), sep=" ") %>% str_to_title()
 
 # Grab the name of table columns
-column_name <- page_71[4] %>% str_squish()  %>% paste(str_squish(page_71[5]), str_squish(page_71[6]), str_squish(page_71[7]), sep=" ") %>% str_to_title()
+column_name <- page_71[6] %>% str_squish()  %>% paste(str_squish(page_71[7]), str_squish(page_71[8]), str_squish(page_71[9]), sep=" ") %>% str_to_title()
 column_name <- c("Characteristic", "07-17", "18-23", "24-35", "36-47", "48+", "Total", "Median number of months since previous birth", "Number of births")
 
 # Convert into eight tibble
-mother_age_data <- tibble(all = page_71[9:15])
+mother_age_data <- tibble(all = page_71[13:19])
 mother_age_data <- mother_age_data %>%
   mutate(all = str_squish(all)) %>% # Any space more than two spaces is reduced
   mutate(all = str_replace(all, "I00.0", "100.0")) %>%
@@ -38,7 +40,7 @@ mother_age_data <- mother_age_data %>%
            extra = "drop"
   )
 
-birth_order_data <- tibble(all = page_71[17:19])
+birth_order_data <- tibble(all = page_71[22:24])
 birth_order_data <- birth_order_data %>%
   mutate(all = str_squish(all)) %>% # Any space more than two spaces is reduced
   mutate(all = str_replace(all, "I00.0", "100.0")) %>%
@@ -50,7 +52,7 @@ birth_order_data <- birth_order_data %>%
            extra = "drop"
   )
 
-sex_of_prior_birth_data <- tibble(all = page_71[21:22])
+sex_of_prior_birth_data <- tibble(all = page_71[27:28])
 sex_of_prior_birth_data <- sex_of_prior_birth_data %>%
   mutate(all = str_squish(all)) %>% # Any space more than two spaces is reduced
   mutate(all = str_replace(all, "I00.0", "100.0")) %>%
@@ -62,7 +64,7 @@ sex_of_prior_birth_data <- sex_of_prior_birth_data %>%
            extra = "drop"
   )
 
-prior_birth_survive_data <- tibble(all = page_71[24:25])
+prior_birth_survive_data <- tibble(all = page_71[31:32])
 prior_birth_survive_data <- prior_birth_survive_data %>%
   mutate(all = str_squish(all)) %>% # Any space more than two spaces is reduced
   mutate(all = str_replace(all, "I00.0", "100.0")) %>%
@@ -74,7 +76,7 @@ prior_birth_survive_data <- prior_birth_survive_data %>%
            extra = "drop"
   )
 
-residence_data <- tibble(all = page_71[27:28])
+residence_data <- tibble(all = page_71[35:36])
 residence_data <- residence_data %>%
   mutate(all = str_squish(all)) %>% # Any space more than two spaces is reduced
   mutate(all = str_replace(all, "I00.0", "100.0")) %>%
@@ -86,7 +88,7 @@ residence_data <- residence_data %>%
            extra = "drop"
   )
 
-region_data <- tibble(all = page_71[30:38])
+region_data <- tibble(all = page_71[39:47])
 region_data <- region_data %>%
   mutate(all = str_squish(all)) %>% # Any space more than two spaces is reduced
   mutate(all = str_replace(all, "I00.0", "100.0")) %>%
@@ -102,7 +104,7 @@ region_data <- region_data %>%
   mutate(`Region/Residence`=str_replace(`Region/Residence`, "Java-Bali", "Java Bali")) %>%
   subset(select =-c(temp1, temp2))
 
-education_data <- tibble(all = page_71[40:43])
+education_data <- tibble(all = page_71[50:53])
 education_data <- education_data %>%
   mutate(all = str_squish(all)) %>% # Any space more than two spaces is reduced
   mutate(all = str_replace(all, "I00.0", "100.0")) %>%
@@ -116,8 +118,8 @@ education_data <- education_data %>%
   mutate(`Education`=ifelse(!is.na(temp), paste(`temp`, `Education`, sep = " "), `Education`)) %>%
   subset(select =-temp)
 
-work_status_data <- tibble(all = page_71[45:46])
-work_status_data <- work_status_data %>%
+work_status_data <- tibble(all = page_71[56:59])
+work_status_data <- rbind(slice(work_status_data, 1:2), slice(work_status_data, 4)) %>%
   mutate(all = str_squish(all)) %>% # Any space more than two spaces is reduced
   mutate(all = str_replace(all, "I00.0", "100.0")) %>%
   separate(col = all,
@@ -152,14 +154,9 @@ for (i in 1:length(data_names)) {
            mutate_at(vars(column_name[2:8]), ~as.double(.)))
 }
 
-# find the parent directory
-getwd()
-setwd("..")
-parent <- getwd()
-
 # save the df to csv files
 for (i in 1:length(data_names)) {
-  write.csv(eval(as.symbol(data_names[i])), paste(parent, "outputs/data/", data_names[i], ".csv", sep = ""), row.names = FALSE)}
+  write.csv(eval(as.symbol(data_names[i])), paste(here(), "/outputs/data/", data_names[i], ".csv", sep = ""), row.names = FALSE)}
 
 
 

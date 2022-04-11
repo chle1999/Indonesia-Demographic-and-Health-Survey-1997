@@ -19,6 +19,7 @@ bibliography: ref_list.bib
 # install.packages("here")
 # install.packages("readr") 
 # install.packages("knitr")
+# install.packages("tinytex")
 library(janitor)
 library(pdftools)
 library(purrr)
@@ -28,6 +29,7 @@ library(kableExtra)
 library(here)
 library(readr)
 library(knitr)
+library(tinytex)
 ```
 
 # Abstract
@@ -64,11 +66,11 @@ for (i in 1:length(data_names)) {
 }
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 include_graphics(paste(here(), "/outputs/image/pic.png", sep = ""))
 ```
 
-# Survey Methodology 
+## Survey Methodology 
 A steering committee has been established to coordinate the development of the survey developed by the CBS, the NFPCB, and the Ministry of Health. The 1997 IDHS consisted of three schedules designed to gather information about households, the welfare of families and individuals. The content of the household and individual questionnaire is available in Appendix E of the original report. Survey questions were carefully crafted in order to provide managers, policymakers, and researchers with guidelines for evaluating and improving program effectiveness.
 
 In order to make the survey more accessible, the survey was first designed in English and then translated into Indonesian. As part of the survey, the household schedule was modified from the Susenas survey model, a well-developed national survey conducted by CBS. As an extension of the previous IDHS conducted from 1991 to 1994, the family welfare schedule focuses on assessing the welfare status of family members listed by the households surveyed from the previous schedule throughout the country. The individual questionnaire was distributed only to ever-married women between the reproductive ages of 15-49, in accordance with the survey's objectives to examine fertility and maternal and child health. 
@@ -153,7 +155,7 @@ ggplot(fig3, aes(x=`Number of Months Since Previous Birth`)) +
 
 This report also looks at other demographical factors of the mothers, including geographical location, work status, and education level, and how they affect birth intervals. 
 
-Figure 5 groups participants by their residential location and the area they live in. The IDHS categorized all participants into three different regions: Java-Bali; Outer Java-Bali I; and Outer Java-Bali II.Then under each region, the participants were further grouped by the areas they live in (rural or urban). The result of the analysis shows that the birth interval varies widely among different regions. The overall median birth interval in Java-Bali is 12.8 months longer than it in Outer Java-Bali I and 13.2 months longer in Outer Java-Bali II. 
+Figure 4 groups participants by their residential location and the area they live in. The IDHS categorized all participants into three different regions: Java-Bali; Outer Java-Bali I; and Outer Java-Bali II.Then under each region, the participants were further grouped by the areas they live in (rural or urban). The result of the analysis shows that the birth interval varies widely among different regions. The overall median birth interval in Java-Bali is 12.8 months longer than it in Outer Java-Bali I and 13.2 months longer in Outer Java-Bali II. 
 
 This phenomenon could be explained by the types of occupations women chose in these regions. According to IDHS, in 1997, only 36.1% of women in Java-Bali worked in land, while over 20% of women had industrial jobs. Meanwhile, in other regions, over 50% women worked in land. Agricultural jobs are significantly more flexible compared to industrial jobs, which provided more incentives for women to bear children. At the same time, job flexibility provides more time for mothers to recover from previous birth so that they are able to have birth within a shorter interval. 
 
@@ -173,7 +175,7 @@ ggplot(fig4, aes(x=Residence, y=as.numeric(`Median number of months since previo
   labs(caption = "Figure4 created by Group 16 in STA304, Winter 2022")
 ```
 
-Similarly, referring to Figure 6, where mothers were categorized based on their levels of education, there is no obvious discrepancy among those who had no education, some primary education, and completed primary education. Interestingly, it is notable that among those who had some secondary education and above, 8.1% had extremely short birth intervals (7 to 17 months), while the number was around 5% among other groups. According to the research conducted by Jungho Kim, who conducted in-depth research on the positive correlation between Indonesian women’s education level and birth intervals, this phenomenon is extremely common in developing countries including Indonesia, as in the first stages of development, coupled with higher income have more incentive to bear children to pass down their properties and wealth [@C18].
+Similarly, referring to Figure 5, where mothers were categorized based on their levels of education, there is no obvious discrepancy among those who had no education, some primary education, and completed primary education. Interestingly, it is notable that among those who had some secondary education and above, 8.1% had extremely short birth intervals (7 to 17 months), while the number was around 5% among other groups. According to the research conducted by Jungho Kim, who conducted in-depth research on the positive correlation between Indonesian women’s education level and birth intervals, this phenomenon is extremely common in developing countries including Indonesia, as in the first stages of development, coupled with higher income have more incentive to bear children to pass down their properties and wealth [@C18].
 
 ```{r, message=FALSE, echo=FALSE, warning=FALSE}
 # Education Separated By Number Of Months Since Previous Birth
@@ -450,7 +452,7 @@ A: N/A
 
 Q: How will the dataset will be distributed (e.g., tarball on website, API, GitHub)? Does the dataset have a digital object identifier (DOI)?
 
-A: it does not have DOI 
+A: available on website, it does not have DOI 
 
 Q: When will the dataset be distributed?
 

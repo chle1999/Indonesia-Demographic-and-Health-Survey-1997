@@ -47,8 +47,7 @@ In this report, we analyze the birth interval results by background characterist
 
 Specifically, the rest of the paper is composed of three parts: a data section that provides extensive information about the source data and methodology of the survey; a result section that presents the visualization of the data extracted from the report and analyzes the results; and a discussion section that discusses the limitations and implications.
 
-For the purpose of analyzing the data in this report, the R statistical programming language [@R] will be used. Furthermore, for cleaning and analysis procedures, the following packages must be installed in R: janitor()[@janitor], pdftools() [@pdftools], purrr()[@purrr], tidyverse() [@tidyverse], stringi()[@stringi], and kableExtra() [@kableExtra].
-
+For the purpose of analyzing the data in this report, the R statistical programming language [@R] will be used. Furthermore, for cleaning and analysis procedures, the following packages must be installed in R: janitor()[@janitor], pdftools() [@pdftools], purrr()[@purrr], tidyverse() [@tidyverse], stringi()[@stringi], kableExtra() [@kableExtra], here()[@here], readr()[@readr], knitr()[@knitr], and tinytex()[@tinytex].
 
 # Data
 
